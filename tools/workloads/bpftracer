@@ -1,0 +1,26 @@
+#!/usr/bin/bpftrace
+
+tracepoint:sched:sched_switch {
+    if (args->prev_comm == "synth") {
+        @synth_cpu_counts[cpu]++;
+    } else if (args->prev_comm == "hog") {
+        @hog_cpu_counts[cpu]++;
+    } else {
+        @other_cpu_counts[cpu]++;
+    }
+}
+
+END {
+    printf("Distribution of 'synth' process sightings per CPU:\n");
+    print(@synth_cpu_counts);
+ 
+    printf("Distribution of 'hog' process sightings per CPU:\n");
+    print(@hog_cpu_counts);
+
+    printf("Distribution of other process sightings per CPU:\n");
+    print(@other_cpu_counts);
+
+    clear(@synth_cpu_counts);
+    clear(@hog_cpu_counts);
+    clear(@other_cpu_counts);
+}

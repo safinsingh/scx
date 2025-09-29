@@ -28,6 +28,7 @@ members = [ "rust/arenalib/arenalib",
     "tools/scxtop",
     "tools/vmlinux_docify",
     "tools/xtask",
+    "tools/workloads",
 ]
 resolver = "2"
 
